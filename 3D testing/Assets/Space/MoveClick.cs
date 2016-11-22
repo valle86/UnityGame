@@ -10,10 +10,11 @@ public class MoveClick : MonoBehaviour {
     private float accelerationSpeed = 1f;   // Acceleration speed
 
     [SerializeField][Range(1, 20)]
-    private float rotateSpeed = 5f;         // Rotate speed
+    private int rotateSpeed = 100;         // Rotate speed
 
     private Vector3 targetPosition;     // Where we want to travel too.
-    private bool isMoving;              // Toggle to check if we are moving or not. 
+    private bool isMoving;              // Toggle to check if we are moving or not.
+    private Vector3 originOnClick;
 
     const int LEFT_MOUSE_BUTTON = 0;    // 0=Left mouse botton, this field is made for code readability.
 
@@ -29,6 +30,7 @@ public class MoveClick : MonoBehaviour {
         // if the player clicked on the screen, find out where
         if (Input.GetMouseButton(LEFT_MOUSE_BUTTON))
         {
+            saveShipOriginOnClick();
             setTargetPosition();
         }
 
@@ -36,7 +38,7 @@ public class MoveClick : MonoBehaviour {
         // If we are still moving, then move the player
         if (isMoving)
         {
-            rotatePlayer();
+            
             acceleratePlayer();
             movePlayer();
         }
@@ -44,10 +46,15 @@ public class MoveClick : MonoBehaviour {
         // TODO ALIGN SHIP ACCORDING TO Z axis so they match
         else if( true )
         {
-            
-        }
 
-	}
+        }
+        rotatePlayer();
+    }
+
+    private void saveShipOriginOnClick()
+    {
+        originOnClick = transform.position;
+    }
 
     private void acceleratePlayer()
     {
@@ -57,11 +64,15 @@ public class MoveClick : MonoBehaviour {
     private void rotatePlayer()
     {
         // Look at where we want to move. 
-        Vector3 newDir = Vector3.RotateTowards(transform.position, targetPosition, rotateSpeed * Time.deltaTime, 0.0f);
-        transform.rotation = Quaternion.LookRotation(newDir);
+        // Vector3 newDir = Vector3.RotateTowards(transform.forward, targetPosition - transform.position, rotateSpeed * Time.deltaTime , 0f);
+        // transform.rotation = Quaternion.LookRotation(newDir);
+        if (targetPosition != originOnClick) {
+        Quaternion targetRotation = Quaternion.LookRotation(targetPosition - originOnClick);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
+        }
         //transform.LookAt(targetPosition);       
         //transform.position = Vector3.RotateTowards(transform.position, targetPosition, rotateSpeed, 0.0f);
-        Debug.DrawRay(transform.position, newDir, Color.yellow);
+        //Debug.DrawRay(originOnClick, q, Color.yellow);
     }
 
     private void movePlayer()
