@@ -9,8 +9,8 @@ public class MoveClick : MonoBehaviour {
     [SerializeField][Range(1, 20)]
     private float accelerationSpeed = 1f;   // Acceleration speed
 
-    [SerializeField][Range(1, 20)]
-    private int rotateSpeed = 100;         // Rotate speed
+    [SerializeField][Range(1, 200)]
+    private float rotateSpeed = 100f;         // Rotate speed
 
     private Vector3 targetPosition;     // Where we want to travel too.
     private bool isMoving;              // Toggle to check if we are moving or not.
@@ -40,6 +40,7 @@ public class MoveClick : MonoBehaviour {
         {
             
             acceleratePlayer();
+            rotatePlayer();
             movePlayer();
         }
 
@@ -48,7 +49,7 @@ public class MoveClick : MonoBehaviour {
         {
 
         }
-        rotatePlayer();
+        
     }
 
     private void saveShipOriginOnClick()
