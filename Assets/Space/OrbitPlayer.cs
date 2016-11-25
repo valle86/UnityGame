@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class OrbitPlayer : MonoBehaviour {
 
     public Transform target;
+    public Text mathQuestion;
     public float orbitDistance = 10.0f;
 
     [SerializeField][Range(-180, 180)]
@@ -12,7 +14,7 @@ public class OrbitPlayer : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-
+        mathQuestion.text = "(MathProblem x)";
     }
 
     void Orbit()
